@@ -1,8 +1,9 @@
 <?php 
-
+    
     require_once("../master/dashboardController/dashboardController.php");
     $logout = "../master/logController/logoutController.php";
-
+    session_start();    
+    var_dump($_SESSION);
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +49,7 @@
             <!-- Navigation -->
             <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="index.html">Startmin</a>
+                    <a class="navbar-brand" href="#">ZSDEV</a>
                 </div>
 
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -59,7 +60,7 @@
                 </button>
 
                 <ul class="nav navbar-nav navbar-left navbar-top-links">
-                    <li><a href="#"><i class="fa fa-home fa-fw"></i> Website</a></li>
+                    <li><a href="#"><i class="fa fa-home fa-fw"></i> Admin Dashboard</a></li>
                 </ul>
 
                 <ul class="nav navbar-right navbar-top-links">
@@ -119,7 +120,7 @@
                     </li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-user fa-fw"></i> secondtruth <b class="caret"></b>
+                            <i class="fa fa-user fa-fw"></i> <?php echo (empty($_SESSION["username"])) ? "Admin" : $_SESSION["username"]; ?>  <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu dropdown-user">
                             <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>

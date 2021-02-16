@@ -1,12 +1,7 @@
 <?php
+
 // Initialize the session
 session_start();
- 
-// Check if the user is already logged in, if yes then redirect him to welcome page
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-    header("location: ../../admin/dashboard.php");
-    exit;
-}
  
 // Include config file
 require_once $_SERVER['DOCUMENT_ROOT'] . "/conf/config.php";
@@ -78,7 +73,34 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             // Close statement
             unset($stmt);
-        }
+        }        
+    }
+
+    // Store loggedIn Message
+    if($_SESSION["loggedin"] === true && !empty($_SESSION["username"])) {
+
+        $type = "login";
+        $message =  $_SESSION["username"] . " as logged in";
+        // Prepare an insert statement
+        $sql = "INSERT INTO zsd_notification (type, message) VALUES (:type, :message)";
+
+        if($stmt = $pdo->prepare($sql)){
+            // Bind variables to the prepared statement as parameters
+            $stmt->bindParam(":message", $param_message, PDO::PARAM_STR);       
+            $stmt->bindParam(":type", $param_type, PDO::PARAM_STR);
+            // Set parameters
+            $param_type = $type;
+            $param_message = $message;
+
+            // Attempt to execute the prepared statement
+            if($stmt->execute()){ 
+                $alert_success = "New notification";
+            } else {
+                $alert_err = "Something went wrong with alert message insert";
+            }
+            // Close statement
+            unset($stmt);
+        }    
     }
     
     // Close connection
